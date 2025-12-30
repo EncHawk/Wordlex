@@ -10,17 +10,13 @@ const userSchema = new Schema({
     score:Number
 })
 const wordsSchema = new Schema({
-     length: { type: Number, required: true },
+    length: { type: Number, required: true },
     word: { type: String, required: true },
     description: { type: String, required: true },
     difficulty: { type: String, required: true },
-    currentWord:{type:String,required:true}
+    currentWord:{type:Boolean,required:true},
+    previousWord:{type:Boolean,required:true}
 })
-const previousWordsSchema = new Schema({
-    word:{type:String, required:true}
-})
-
 export const User = mongoose.model('User', userSchema)
 export const Words = mongoose.model('Words', wordsSchema)
-export const PreviousWords = mongoose.model('PreviousWords', previousWordsSchema)
 // module.exports(User)
