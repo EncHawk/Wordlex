@@ -4,8 +4,8 @@ import { required } from "zod/mini";
 const conn = mongoose.connect('mongodb://localhost:27017/Wordlex')
 
 const userSchema = new Schema({
-    name:String,
-    email:String,
+    name:{type:String, unique:true},
+    email:{type:String, unique:true},
     password:String,
     score:Number
 })
