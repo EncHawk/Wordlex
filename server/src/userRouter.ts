@@ -1,15 +1,17 @@
 import express from 'express'
 import mongoose from 'mongoose'
-import bcrypt from 'bcrypt'
 // import { data, prevUsed } from './data'
 import { globalCatch } from './utils'
 import * as zod from 'zod'
-import {User,Words,PreviousWords} from './db'
+import jwt from 'jsonwebtoken'
+import {User,Words} from './db'
 import type { ZodUndefinedDef } from 'zod/v3'
+import { limiter } from './rateLimit'
 
 const wordRouter = express.Router()
-const saltRounds = 12;
+const secret:any= "dilip"
 wordRouter.use(globalCatch)
+wordRouter.use(limiter)
 
 interface wordType{
     length:number,
@@ -56,48 +58,65 @@ wordRouter.post('/signin',async(req,res)=>{
   // const{name,email,password} = req.body
   const input = req.body
   const userInputValidation = zod.object({
-      name:zod.string(),
-      email:zod.email({pattern:zod.regexes.rfc5322Email}),
-      password:zod.string().min(8,'Too Short')
-
+    name:zod.string().min(5,'Too Short'),
+    email:zod.email({pattern:zod.regexes.rfc5322Email})
   })
   try{
     const parseRes = await userInputValidation.parseAsync(input);
-    const hash = await bcrypt.hash(input.password,saltRounds)
     const user = await new User({
         name:input.name,
         email:input.email,
-        password:hash,
         score:0
     })
+    const token = await jwt.sign(input,secret)
     await user.save()
     return res.status(200).send({
-        ok:true,
-        msg:"User added successfully, you will receive an email soon :)"
+      ok:true,
+      msg:"User added successfully, you will receive an email soon :)",
+      token:token
     })
   }
-  catch(err){
+  catch(err:any){
     console.log(err)
-    return res.status(304).send({
-        ok:false,
-        msg:"Whoops, something went wrong, try again!"
+    return res.status(403).send({
+      ok:false,
+      msg:"Whoops, something went wrong, try again!",
     })
   }
 })
 
 wordRouter.get('/word',async(req,res)=>{
-  const toSend = await randomWord();
-  if(!toSend){
-    return res.status(503).send({
+  const jet= req.headers.authorization;
+  // console.log(bs)
+  if(!jet){
+    return res.status(403).send({
       ok:false,
-      msg:"something went wrong, try again :/"
-    })
+      message:"Invalid identity, try again."
+  })}
+
+  try{  
+    const verify = jwt.verify(jet,secret)
+    console.log(verify)
+    const toSend = await randomWord();
+    if(!toSend){
+      return res.status(503).send({
+        ok:false,
+        msg:"something went wrong, try again :/"
+      })
+    }
+    else{
+      return res.status(200).send({
+        ok:true,
+        msg:"word found successfully, try guessin!",
+        word:toSend
+      })
+    }
   }
-  else{
-    return res.status(200).send({
-      ok:true,
-      msg:"word found successfully, try guessin!",
-      word:toSend
+  catch(err){
+    console.log(err)
+    return res.status(403).send({
+      ok:false,
+      msg:"invalid token"
     })
   }
 
