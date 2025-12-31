@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark,.dark *));
 :root{
     box-sizing: border-box;
+}
+
+@theme inline{
+    --color-dark: #0a0a0a;
+    --color-semidark: #171717;
+    --color-light: #a8a29e;      /* Darker base - more visible */
+    --color-semilight: #d6d3d1;
 }

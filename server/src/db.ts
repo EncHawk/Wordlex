@@ -1,5 +1,4 @@
 import mongoose,{Schema} from "mongoose";
-import { required } from "zod/mini";
 
 const conn = mongoose.connect('mongodb://localhost:27017/Wordlex')
 
