@@ -2,5 +2,5 @@
 // the score generation needs to happen in the frontend. and then it shd send it to the backedn as a number in 100's atleast greater than 100
 
 // shd add streak system a new field in the user's table
-// add a rate limiter for the get and post requests.
-// authenticate the get request, if bad return 403
+// add changes to db for the streaks, or figure it out.
+// we need to figure out the CORS

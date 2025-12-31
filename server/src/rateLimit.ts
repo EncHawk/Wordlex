@@ -4,7 +4,7 @@ const rec = {
     usr:" "
 }
 export function limiter (req,res,next){
-    const temp = req.header.authorization || req.body.name
+    const temp = req.headers.authorization || req.body.name
     if(rec.usr === temp){
         return res.status(403).send({
             ok:false,

@@ -1,16 +1,19 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import * as zod from 'zod'
-import bcrypt from 'bcrypt'
 import {User} from './db'
 import wordRouter from './userRouter'
 import {globalCatch} from './utils'
+import cors from 'cors'
 dotenv.config()
 
 // constants definition for future well-being
 const app = express();
 app.use(express.json());
-
+app.use(cors({
+    origin:"http:localhost:5173",
+    credentials:true
+}))
 app.use(globalCatch)
 app.listen(process.env.PORT||8080)
 

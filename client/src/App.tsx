@@ -1,34 +1,64 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const url = '/api/'  
+  const[loading,setLoading] = useState(false)
+  const[response,setResponse] = useState(null)
+  const[word,setWord] = useState("")
+  const [error,setError] = useState(false)
+
+  async function handleSignin(){
+    setLoading(true)
+    try{
+      const req = await fetch(url+'signin',{
+        method:'POST',
+        headers:{
+          "Content-Type":"application/json",
+          
+        },
+        body:JSON.stringify({name:"pilid",email:"dilipdeepu.r2000@gmail.com"}),
+        credentials:'include'
+      })
+      const data = await req.json()
+      if(data.token){
+        localStorage.setItem('token',data.token)
+      }
+      setResponse(data)
+      setLoading(false)
+    } 
+    catch(err){
+      setLoading(false)
+      console.log(err)
+      setError(true)
+    }
+  }
+  async function handleWord(){
+    try{
+      setError(false)
+      setLoading(true)
+      const res = await fetch(url+'word',{
+        method:"GET",
+        headers:{
+          "authorization":`${localStorage.getItem('token')}`
+        },
+      })
+      const data = await res.json();
+      const word = data.word.word;
+      if(word){
+        setWord(word)
+      }
+    }
+    catch(err:any){
+      setLoading(false)
+      console.log(err.message)
+      setError(true)
+    }
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className='flex gap-5 items-center justify-center h-100% bg-red-100'>
+      
+    </div>
   )
 }
 
