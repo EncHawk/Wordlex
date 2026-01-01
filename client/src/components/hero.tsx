@@ -1,4 +1,5 @@
 import react from 'react'
+import { Link } from 'react-router-dom'
 
 export const Hero= ()=>{
     return(
@@ -11,7 +12,7 @@ export const Hero= ()=>{
             <button className='bg-transparent backdrop-sm border-[0.5px] dark:border-neutral-200 border-neutral-900 px-4 py-px cursor-pointer
                 hover:bg-neutral-600/40 dark:hover:bg-neutral-100/40 hover:text-blue-100
             '>
-                Try Now!
+               <Link to={"/app"}>Try Now!</Link>
             </button>
         </div>
     )

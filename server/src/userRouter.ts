@@ -88,15 +88,15 @@ wordRouter.post('/signin',async(req,res)=>{
 wordRouter.get('/word',async(req,res)=>{
   const jet= req.headers.authorization;
   // console.log(bs)
-  if(!jet){
-    return res.status(403).send({
-      ok:false,
-      message:"Invalid identity, try again."
-  })}
+  // if(!jet){
+  //   return res.status(403).send({
+  //     ok:false,
+  //     message:"Invalid identity, try again."
+  // })}
 
   try{  
-    const verify = jwt.verify(jet,secret)
-    console.log(verify)
+    // const verify = jwt.verify(jet,secret)
+    // console.log(verify)
     const toSend = await randomWord();
     if(!toSend){
       return res.status(503).send({
@@ -119,7 +119,6 @@ wordRouter.get('/word',async(req,res)=>{
       msg:"invalid token"
     })
   }
-
 })
 
 
