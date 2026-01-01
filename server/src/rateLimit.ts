@@ -15,5 +15,5 @@ export function limiter (req,res,next){
     next()
     setTimeout(()=>{
         rec.usr=" "
-    },5000)
+    },8000)
 }

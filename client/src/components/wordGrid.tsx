@@ -1,19 +1,101 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 
-export const Wgrid= ({length}:any)=>{
-    function returnGrid(){
-        while(length--){
-            return(
-                <div className="bg-blue-400 w-40 h-40 py-2 px-px border-neutral-300">
-                </div>
-            )
-        }
+// Wgrid Component
+export const Wgrid = ({ length }: { length: number }) => {
+  function generateGrid() {
+    for (let i = 0; i < length; i++) {
+      return (
+        Array.from({ length: length }).map((_, i) => (
+          <div
+            
+            className="flex flex-col justify-center items-center gap-3 sm:gap-4 md:gap-6"
+          >
+            <div key={i} className="bg-neutral-200 shadow-md w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 border items-center rounded-lg border-neutral-300"></div>
+            <div key={i} className="bg-neutral-200 shadow-md w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 border items-center rounded-lg border-neutral-300"></div>
+            <div key={i} className="bg-neutral-200 shadow-md w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 border items-center rounded-lg border-neutral-300"></div>
+            <div key={i} className="bg-neutral-200 shadow-md w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 border items-center rounded-lg border-neutral-300"></div>
+            <div key={i} className="bg-neutral-200 shadow-md w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 border items-center rounded-lg border-neutral-300"></div>
+          </div>
+        ))
+      );
     }
-    return(
-        <div className="flex justify-content items-center w-full">
-            <div className={`grid grid-cols${length}`}>
-               {returnGrid()}
-            </div>
+  }
+
+  return (
+    <div className="flex flex-col h-screen justify-center items-center w-full max-w-5xl px-2 sm:px-4">
+      <div
+        className="grid gap-4 sm:gap-5 md:gap-6"
+        style={{ gridTemplateColumns: `repeat(${length}, minmax(0, 1fr))` }}
+      >
+        {generateGrid()}
+      </div>
+    </div>
+  );
+};
+
+// Wordle Component
+export default function Wordle() {
+  const [word, setWord] = useState<string | null>(null);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const hasFetched = useRef(false); // Prevent multiple requests
+
+  const url = "http://localhost:8080/api/";
+
+  useEffect(() => {
+    // Prevent multiple requests
+    if (hasFetched.current) return;
+    hasFetched.current = true;
+
+    const fetchWord = async () => {
+      try {
+        const res = await fetch(url + "word", {
+          method: "GET",
+          headers: {
+            // Store token in memory instead of localStorage
+            authorization: "" // Add your token here
+          }
+        });
+
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+
+        const data = await res.json();
+        setWord(data.word.word);
+        setError(false);
+      } catch (err) {
+        console.error("Failed to fetch word:", err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchWord();
+  }, []); // Empty dependency array - runs once
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-xl text-gray-600">Loading...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-xl text-red-600">
+          Failed to load word. Please try again.
         </div>
-    )
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex items-center rounded-lg bg-transparent justify-center min-h-screen mx-auto w-full max-w-5xl">
+      <Wgrid length={word?.length || 5} />
+    </div>
+  );
 }
