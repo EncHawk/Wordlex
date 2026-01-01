@@ -77,7 +77,7 @@ wordRouter.post('/signin',async(req,res)=>{
     })
   }
   catch(err:any){
-    console.log(err)
+    console.log(err.message)
     return res.status(403).send({
       ok:false,
       msg:"Whoops, something went wrong, try again!",
