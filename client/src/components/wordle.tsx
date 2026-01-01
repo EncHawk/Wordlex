@@ -37,7 +37,7 @@ export const Wordle = () => {
       <div className="flex flex-col items-center justify-center rounded-lg bg-transparent  
         min-h-screen mx-auto w-full max-w-7xl bg-linear-to-b from-neutral-100 to-violet-400">
           <Navbar/>
-          <Wgrid length={word?.length}/>
+          <Wgrid length={word?.length || 5}/>
       </div>
   )
 }

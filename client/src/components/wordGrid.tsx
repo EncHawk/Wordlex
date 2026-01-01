@@ -10,12 +10,12 @@ export const Wgrid = ({ length }: { length: number }) => {
             
             className="flex flex-col justify-center items-center gap-3 sm:gap-4 md:gap-6"
           >
-            <div key={i} className="bg-neutral-200 shadow-md w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 border items-center rounded-lg border-neutral-300"></div>
-            <div key={i} className="bg-neutral-200 shadow-md w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 border items-center rounded-lg border-neutral-300"></div>
-            <div key={i} className="bg-neutral-200 shadow-md w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 border items-center rounded-lg border-neutral-300"></div>
-            <div key={i} className="bg-neutral-200 shadow-md w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 border items-center rounded-lg border-neutral-300"></div>
-            <div key={i} className="bg-neutral-200 shadow-md w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 border items-center rounded-lg border-neutral-300"></div>
-          </div>
+            <div key={i} className="flex justify-center items-center bg-neutral-200 shadow-md cursor-text text-5xl text-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 border items-center rounded-lg border-neutral-300">A</div>
+            <div key={i} className="flex justify-center items-center bg-neutral-200 shadow-md cursor-text text-5xl text-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 border items-center rounded-lg border-neutral-300">B</div>
+            <div key={i} className="flex justify-center items-center bg-neutral-200 shadow-md cursor-text text-5xl text-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 border items-center rounded-lg border-neutral-300">A</div>
+            <div key={i} className="flex justify-center items-center bg-neutral-200 shadow-md cursor-text text-5xl text-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 border items-center rounded-lg border-neutral-300">A</div>
+            <div key={i} className="flex justify-center items-center bg-neutral-200 shadow-md cursor-text text-5xl text-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 border items-center rounded-lg border-neutral-300">A</div>
+            </div>
         ))
       );
     }
