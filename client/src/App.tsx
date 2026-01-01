@@ -22,7 +22,7 @@ function App() {
   }, [])
 
 
-  const grid = dark? '#404040':'white'
+  const grid = dark? '#404040':'#e5e5e5'
   const gradient = dark
   ?`radial-gradient(circle at top, transparent 0%, var(--color-semidark) 80%, var(--color-dark) 100%), 
   radial-gradient(circle at bottom, transparent 70%, var(--color-dark) 100%`
@@ -30,7 +30,7 @@ function App() {
   radial-gradient(circle at bottom, transparent 70%, var(--color-semilight) 100%`
 
   return ( // the outer one is the layout!
-    <div className=' relative flex flex-col gap-5 h-100% 
+    <div className=' relative flex flex-col items-center justify-center gap-10 h-100% 
     w-full min-h-screen dark:bg-black bg-blue-500 dark:text-white'>
       <div 
         style={{
