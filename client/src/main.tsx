@@ -7,7 +7,7 @@ import { ErrorPage } from './components/notFound.tsx'
 import { Wordle } from './components/wordle.tsx'
 
 const router = createBrowserRouter([
-    {path:"/home",element:<App/>},
+    {path:"/",element:<App/>},
     {path:"*",element:<ErrorPage/>},
     {path:"/app",element:<Wordle/>}
 ]) 

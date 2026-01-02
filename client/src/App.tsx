@@ -47,20 +47,16 @@ function App() {
         <Hero/>
       </Container>
       <div className=' w-full h-125 flex justify-center items-center mx-auto z-10 px-2 py-8 bg-neutral-100 dark:bg-neutral-900'>
-        <div className='grid grid-cols-4 grid-rows-3 gap-4 auto-rows-fr h-100 w-full max-w-3xl'>
+        <div className='grid grid-cols-4 grid-rows-5 gap-4 auto-rows-fr h-100 w-full max-w-3xl'>
           <div className='bg-blue-400 rounded-xl px-6 py-6 col-span-2 row-span-2 
           hover:scale-[1.02] transition-transform duration-300'></div>
           
-          <div className='bg-green-400 rounded-xl px-6 py-6 col-span-2 row-span-1
+          <div className='bg-green-400 rounded-xl px-6 py-6 col-span-2 row-span-3
           hover:scale-[1.02] transition-transform duration-300'></div>
           
-          <div className='bg-orange-400 rounded-xl px-6 py-6 col-span-1 row-span-1
-          hover:scale-[1.02] transition-transform duration-300'></div>
+         
           
-          <div className='bg-yellow-400 rounded-xl px-6 py-6 col-span-1 row-span-1
-          hover:scale-[1.02] transition-transform duration-300'></div>
-          
-          <div className='bg-red-400 rounded-xl px-6 py-6 col-span-2 row-span-2
+          <div className='bg-red-400 rounded-xl px-6 py-6 col-span-2 row-span-3
           hover:scale-[1.02] transition-transform duration-300'></div>
           
           <div className='bg-indigo-400 rounded-xl px-6 py-6 col-span-2 row-span-2

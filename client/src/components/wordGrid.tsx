@@ -10,9 +10,9 @@ export const Wgrid = ({ length }: { length: number }) => {
             
             className="flex flex-col justify-center items-center gap-3 sm:gap-4 md:gap-6"
           >
-            <div key={i} className="flex justify-center items-center bg-neutral-200 shadow-md cursor-text text-5xl text-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 border items-center rounded-lg border-neutral-300">A</div>
-            <div key={i} className="flex justify-center items-center bg-neutral-200 shadow-md cursor-text text-5xl text-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 border items-center rounded-lg border-neutral-300">B</div>
-            <div key={i} className="flex justify-center items-center bg-neutral-200 shadow-md cursor-text text-5xl text-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 border items-center rounded-lg border-neutral-300">A</div>
+            <div key={i} className="flex justify-center items-center bg-green-400 shadow-md cursor-text text-5xl text-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 border items-center rounded-lg border-red-500">A</div>
+            <div key={i} className="flex justify-center items-center bg-amber-400 shadow-md cursor-text text-5xl text-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 border items-center rounded-lg border-neutral-300">B</div>
+            <div key={i} className="flex justify-center items-center bg-neutral-400 shadow-md cursor-text text-5xl text-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 border items-center rounded-lg border-neutral-300">A</div>
             <div key={i} className="flex justify-center items-center bg-neutral-200 shadow-md cursor-text text-5xl text-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 border items-center rounded-lg border-neutral-300">A</div>
             <div key={i} className="flex justify-center items-center bg-neutral-200 shadow-md cursor-text text-5xl text-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 border items-center rounded-lg border-neutral-300">A</div>
             </div>
@@ -95,7 +95,7 @@ export default function Wordle() {
 
   return (
     <div className="flex items-center rounded-lg bg-transparent justify-center min-h-screen mx-auto w-full max-w-5xl">
-      <Wgrid length={word?.length || 5} />
+      <Wgrid length={word?.length || 3} />
     </div>
   );
 }
