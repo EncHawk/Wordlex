@@ -1,38 +1,52 @@
 import React, { useEffect, useState, useRef } from "react";
 
-// Wgrid Component
-export const Wgrid = ({ length }: { length: number }) => {
-  function generateGrid() {
-    for (let i = 0; i < length; i++) {
-      return (
-        Array.from({ length: length }).map((_, i) => (
-          <div
-            
-            className="flex flex-col justify-center items-center gap-3 sm:gap-4 md:gap-6"
-          >
-            <div key={i} className="flex justify-center items-center bg-green-400 shadow-md cursor-text text-5xl text-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 border items-center rounded-lg border-red-500">A</div>
-            <div key={i} className="flex justify-center items-center bg-amber-400 shadow-md cursor-text text-5xl text-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 border items-center rounded-lg border-neutral-300">B</div>
-            <div key={i} className="flex justify-center items-center bg-neutral-400 shadow-md cursor-text text-5xl text-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 border items-center rounded-lg border-neutral-300">A</div>
-            <div key={i} className="flex justify-center items-center bg-neutral-200 shadow-md cursor-text text-5xl text-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 border items-center rounded-lg border-neutral-300">A</div>
-            <div key={i} className="flex justify-center items-center bg-neutral-200 shadow-md cursor-text text-5xl text-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 border items-center rounded-lg border-neutral-300">A</div>
-            </div>
-        ))
-      );
-    }
-  }
+const Tile = ({ letter = "", status = "empty" }) => {
+  const statusStyles:any= {
+    empty: "border-neutral-500 dark:border-neutral-700",
+    correct: "bg-green-500 border-green-500 text-white", // coorect
+    present: "bg-amber-500 border-amber-500 text-white", // wrong-place
+    absent: "bg-neutral-500 border-neutral-500 text-white", // incorrect
+  };
 
   return (
-    <div className="flex flex-col h-screen justify-center items-center w-full max-w-5xl px-2 sm:px-4">
-      <div
-        className="grid gap-4 sm:gap-5 md:gap-6"
-        style={{ gridTemplateColumns: `repeat(${length}, minmax(0, 1fr))` }}
-      >
-        {generateGrid()}
-      </div>
+    <div
+      className={`
+        w-14 h-14 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20
+        border-2 flex items-center justify-center
+        text-2xl sm:text-3xl md:text-4xl font-bold uppercase rounded-sm
+        transition-all duration-500
+        ${statusStyles[status]}
+      `}
+    >
+      {letter}
     </div>
   );
 };
 
+export const Wgrid = ({ length }: { length: number }) => {
+  const ATTEMPTS = 5;
+  const[current,setCurrent] = useState(1)
+
+  // Create a 2D array structure: 6 rows, 'length' columns
+  const rows = Array.from({ length: ATTEMPTS });
+  const cols = Array.from({ length: length });
+
+  return (
+    <div className="flex flex-col items-center justify-center w-full max-w-2xl gap-2 p-4 bg-transparent rounded-xl">
+      {rows.map((_, rowIndex) => (
+        <div key={`row-${rowIndex}`} id={`${rowIndex+1}`} className="flex gap-4">
+          {cols.map((_, colIndex) => (
+            <Tile 
+              key={`tile-${rowIndex}-${colIndex}`} 
+              letter="" // Future: pass letters here from state
+              status="empty" // Future: pass 'correct' | 'present' | 'absent'
+            />
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+};
 // Wordle Component
 export default function Wordle() {
   const [word, setWord] = useState<string | null>(null);
@@ -51,10 +65,7 @@ export default function Wordle() {
       try {
         const res = await fetch(url + "word", {
           method: "GET",
-          headers: {
-            // Store token in memory instead of localStorage
-            authorization: "" // Add your token here
-          }
+          // no need of headers for now, keeping it unsafe as of yet.
         });
 
         if (!res.ok) {
@@ -94,7 +105,8 @@ export default function Wordle() {
   }
 
   return (
-    <div className="flex items-center rounded-lg bg-transparent justify-center min-h-screen mx-auto w-full max-w-5xl">
+    <div className="flex items-center rounded-lg bg-red-600 justify-center min-h-screen mx-auto w-full max-w-5xl
+     border-r-neutral-400 border-l-red-400">
       <Wgrid length={word?.length || 3} />
     </div>
   );

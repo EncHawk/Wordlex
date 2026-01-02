@@ -25,7 +25,7 @@ function App() {
 
   const grid = dark? '#404040':'#e5e5e5'
   const gradient = dark
-  ?`radial-gradient(circle at top, transparent 0%, var(--color-semidark) 80%, var(--color-dark) 100%), 
+  ?`radial-gradient(circle at top, transparent 0%, var(--color-semidark) 79%, var(--color-dark) 100%), 
   radial-gradient(circle at bottom, transparent 80%, var(--color-dark) 100%`
   :`radial-gradient(circle at top, transparent 0%, var(--color-semilight) 80%, var(--color-semilight) 100%),
   radial-gradient(circle at bottom, transparent 80%, var(--color-semilight) 100%`

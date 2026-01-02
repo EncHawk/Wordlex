@@ -21,7 +21,7 @@ export const Navbar = ()=>{
         localStorage.setItem('TailwindTheme',currTheme)
     }
     return (
-        <div className={`fixed top-2 sm:top-4 left-1/2 -translate-x-1/2 z-100  flex items-center justify-between gap-5 inset-shadow-lg 
+        <div className={`fixed top-2 sm:top-4 left-1/2 -translate-x-1/2 z-100  flex items-center justify-between gap-5 inset-shadow-lg transition-all delay-100
          border-neutral-700 dark:border-neutral-200 inset-shadow-lg border-x-0 z-100 ${scroll ?'border-[0.5px] backdrop-blur-lg':'border-none'}
          w-full max-w-3xl rounded-full px-4 py-3 dark:text-white text-black mb-20`}>
             <h1 className=' relative text-2xl'>

@@ -11,3 +11,32 @@
     --color-light: #fafafa;      
     --color-semilight: #fafafa;
 }
+
+.animate-flip{
+    animation: flippy 3.5s ease-in-out;
+    animation-delay:100ms;
+}
+@keyframes flippy{
+    0%{
+        transform: rotateX(0deg);
+        color:transparent
+    }
+    25%{
+        transform: rotateX(10deg);
+        opacity: .8;
+        color:transparent
+    }
+    50%{
+        transform: rotateX(-0.3turn);
+        background-color: gray;
+        color:transparent;
+    }
+    75%{
+        transform: rotateX(10deg);
+        color:transparent
+    }
+    100%{
+        transform: rotateX(0deg);
+        color:transparent
+    }
+}
