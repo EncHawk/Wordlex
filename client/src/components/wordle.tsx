@@ -33,17 +33,11 @@ export const Wordle = () => {
 
     fetchWord();
   }, []);
-  document.addEventListener('keydown',(e)=>{
-    if(e.key==='enter'){
-      // figure out if all the five cells are filled
-      // if yes? then verify
-      // else setError(true), glow up all of them to bg-red-300
-    }
-  })
+  
   return(
       <div className="flex flex-col items-center justify-center bg-transparent  
         min-h-screen mx-auto w-full bg-linear-to-b from-white to-sky-200
-          darl:bg-linear-to-b dark:from-neutral-900 dark:to-violet-950
+          darl:bg-linear-to-b dark:from-neutral-900 dark:to-slate-950
         ">
           <Navbar/>
           <Wgrid length={word?.length || 5}/>

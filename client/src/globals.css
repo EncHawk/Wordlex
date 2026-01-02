@@ -40,3 +40,28 @@
         color:transparent
     }
 }
+.appear-top{
+    animation: show-up 1s linear;
+}
+@keyframes show-up{
+    0%{
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+    25%{
+        transform: translateY(-25px);
+        opacity: .2;
+    }
+    50%{
+        transform: translateY(-20px);
+        opacity: .5;
+    }
+    75%{
+        transform: translateY(-10px);
+        opacity: .7;
+    }
+    100%{
+        transform: translateY(0px);
+        opacity: 1;
+    }
+}

@@ -23,9 +23,99 @@ const Tile = ({ letter = "", status = "empty" }) => {
   );
 };
 
-export const Wgrid = ({ length }: { length: number }) => {
-  const ATTEMPTS = 5;
-  const[current,setCurrent] = useState(1)
+export const Wgrid = ({ length, word }: { length: number; word: string }): JSX.Element => {
+    const ATTEMPTS = 6;
+    const [currentAttempt, setCurrentAttempt] = useState(0);
+    const [guesses, setGuesses] = useState<string[]>(Array(ATTEMPTS).fill(""));
+    const[display,setDisplay] = useState(false)
+    const [tileStatuses, setTileStatuses] = useState<string[][]>(
+      Array(ATTEMPTS).fill(null).map(() => Array(length).fill("empty"))
+    );
+  useEffect(() => {
+  const handleKey = (e: KeyboardEvent) => {
+    if (currentAttempt >= ATTEMPTS) return;
+    const activeGuess = guesses[currentAttempt] || "";
+
+    if (e.key.match(/^[a-zA-Z]$/)) {
+      if (activeGuess.length < length) {
+        const newGuesses = [...guesses];
+        newGuesses[currentAttempt] = activeGuess + e.key.toUpperCase();
+        setGuesses(newGuesses);
+      }
+    } else if (e.key === "Backspace") {
+      if (activeGuess.length > 0) {
+        const newGuesses = [...guesses];
+        newGuesses[currentAttempt] = activeGuess.slice(0, -1);
+        setGuesses(newGuesses);
+      }
+    } else if (e.key === "Enter") {
+      if (activeGuess.length === length && currentAttempt < ATTEMPTS) {
+        // Calculate tile statuses for this guess
+        const newStatuses = [...tileStatuses];
+        const guessArray = activeGuess.split("");
+        const wordArray = word.toUpperCase().split("");
+        const statusRow = Array(length).fill("empty");
+
+        // First pass: mark correct positions
+        const remainingWordLetters: string[] = [];
+        const remainingGuessLetters: string[] = [];
+
+        for (let i = 0; i < length; i++) {
+          if (guessArray[i] === wordArray[i]) {
+            statusRow[i] = "correct";
+          } else {
+            remainingWordLetters.push(wordArray[i]);
+            remainingGuessLetters.push(guessArray[i]);
+          }
+        }
+
+        // Second pass: mark present (wrong position) and absent
+        for (let i = 0; i < remainingGuessLetters.length; i++) {
+          const guessLetter = remainingGuessLetters[i];
+          const wordIndex = remainingWordLetters.indexOf(guessLetter);
+          if (wordIndex !== -1) {
+            const originalIndex = guessArray.findIndex(
+              (letter, idx) => letter === guessLetter && statusRow[idx] === "empty"
+            );
+            if (originalIndex !== -1) {
+              statusRow[originalIndex] = "present";
+              remainingWordLetters.splice(wordIndex, 1);
+            }
+          }
+        }
+
+        // Mark remaining as absent
+        for (let i = 0; i < length; i++) {
+          if (statusRow[i] === "empty") {
+            statusRow[i] = "absent";
+          }
+        }
+
+        newStatuses[currentAttempt] = statusRow;
+        setTileStatuses(newStatuses);
+
+        // Move to next attempt
+        if (currentAttempt < ATTEMPTS - 1) {
+          setCurrentAttempt(currentAttempt + 1);
+        } else {
+          setCurrentAttempt(ATTEMPTS);
+        }
+
+        // Check if won
+        if (activeGuess.toUpperCase() === word.toUpperCase()) {
+          console.log("You won!");
+        }
+      } else {
+        setDisplay(true);
+      }
+    }
+  };
+  
+  document.addEventListener("keydown", handleKey);
+  return () => {
+    document.removeEventListener("keydown", handleKey);
+  };
+}, [currentAttempt, guesses, tileStatuses, length, word]); 
 
   // Create a 2D array structure: 6 rows, 'length' columns
   const rows = Array.from({ length: ATTEMPTS });
@@ -38,12 +128,17 @@ export const Wgrid = ({ length }: { length: number }) => {
           {cols.map((_, colIndex) => (
             <Tile 
               key={`tile-${rowIndex}-${colIndex}`} 
-              letter="" // Future: pass letters here from state
-              status="empty" // Future: pass 'correct' | 'present' | 'absent'
+              letter=""
+              status="empty" 
             />
           ))}
         </div>
       ))}
+      {display && <div className="bg-neutral-200/60 px-2 py-2 rounded-sm text-center text-black text-xl">
+        <h1 className="text-center font-light text-2xl">
+          {word}
+        </h1>
+      </div> }
     </div>
   );
 };
@@ -107,7 +202,7 @@ export default function Wordle() {
   return (
     <div className="flex items-center rounded-lg bg-red-600 justify-center min-h-screen mx-auto w-full max-w-5xl
      border-r-neutral-400 border-l-red-400">
-      <Wgrid length={word?.length || 3} />
+      <Wgrid length={word?.length || 3} word={word ||" "} />
     </div>
   );
 }
