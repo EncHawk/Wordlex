@@ -5,7 +5,7 @@ export const Tile = ({ letter = "", status = "empty" }) => {
   const statusStyles:any= {
     empty: "border-neutral-500 dark:border-neutral-700",
     correct: "bg-green-600 border-green-500 text-white", // coorect
-    present: "bg-amber-600 border-amber-500 text-white", // wrong-place
+    present: "bg-amber-400 border-amber-500 text-white", // wrong-place
     absent: "bg-neutral-500 border-neutral-500 text-white", // incorrect
   };
 
@@ -24,7 +24,7 @@ export const Tile = ({ letter = "", status = "empty" }) => {
   );
 };
 
-export const Wgrid = ({ length, word }: { length: number; word: string }): JSX.Element => {
+export const Wgrid = ({ length, word }: { length: number; word: string }) => {
     const ATTEMPTS = 6;
     const [currentAttempt, setCurrentAttempt] = useState(0);
     const [guesses, setGuesses] = useState<string[]>(Array(ATTEMPTS).fill(""));
@@ -135,7 +135,7 @@ export const Wgrid = ({ length, word }: { length: number; word: string }): JSX.E
             <Tile 
               key={`tile-${rowIndex}-${colIndex}`} 
               letter="a"
-              status="correct" 
+              status={rowIndex%2?`correct`:`present`}
             />
           ))}
         </div>
