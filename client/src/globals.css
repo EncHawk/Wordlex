@@ -19,16 +19,14 @@
 @keyframes flippy{
     0%{
         transform: rotateX(0deg);
-        color:transparent
     }
     25%{
         transform: rotateX(10deg);
         opacity: .8;
-        color:transparent
     }
     50%{
         transform: rotateX(-0.3turn);
-        background-color: gray;
+        background-color: rgb(166, 166, 166);
         color:transparent;
     }
     75%{
@@ -37,7 +35,6 @@
     }
     100%{
         transform: rotateX(0deg);
-        color:transparent
     }
 }
 .appear-top{

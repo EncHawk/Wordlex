@@ -4,7 +4,7 @@ import './globals.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import App from './App.tsx'
 import { ErrorPage } from './components/notFound.tsx'
-import { Wordle } from './components/wordle.tsx'
+import Wordle  from './components/wordle.tsx'
 
 const router = createBrowserRouter([
     {path:"/",element:<App/>},

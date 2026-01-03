@@ -29,7 +29,7 @@ export const Navbar = ()=>{
             </h1>
             <div className='flex items-center gap-4 px-4 py-px transition-all duration-500'>
                 <button className='cursor-pointer shadow-sm text-shadow-sm bg-violet-400 text-white hover:bg-violet-500 transition duration-150
-                 dark:bg-violet-800 dark:text-neutral-300 text-xl border border-black dark:border-neutral-300 border-y-0 rounded-full py-px px-4'>
+                 dark:bg-violet-800 dark:text-neutral-300 text-xl border border-black dark:border-neutral-300 border-y-0 rounded-full py-px px-2 sm:px-4'>
                     <Link to={'/'}>Sign in</Link>
                 </button>
                 <button onClick={handleThemeChange} className='cursor-pointer' >
