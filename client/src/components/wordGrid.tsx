@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import Keyboard from "./keyboard";
 
 export const Tile = ({ letter = "", status = "empty" }) => {
   const statusStyles:any= {
@@ -31,6 +32,11 @@ export const Wgrid = ({ length, word }: { length: number; word: string }): JSX.E
     const [tileStatuses, setTileStatuses] = useState<string[][]>(
       Array(ATTEMPTS).fill(null).map(() => Array(length).fill("empty"))
     );
+
+    function verify(){
+      
+    }
+
   useEffect(() => {
   const handleKey = (e: KeyboardEvent) => {
     if (currentAttempt >= ATTEMPTS) return;
@@ -139,6 +145,7 @@ export const Wgrid = ({ length, word }: { length: number; word: string }): JSX.E
           {word}
         </h1>
       </div> }
+      <Keyboard/>
     </div>
   );
 };
