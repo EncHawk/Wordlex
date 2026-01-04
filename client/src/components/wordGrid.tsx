@@ -56,7 +56,7 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
     } else if (e.key === "Backspace") {
       handleBack(activeGuess)
     } else if (e.key === "Enter") {
-      console.log(guesses)
+      if(currentAttempt+1 === ATTEMPTS) setDisplay(true)
       if (activeGuess.length === length && currentAttempt < ATTEMPTS) {
         // Calculate tile statuses for this guess
         const newStatuses = [...tileStatuses];
