@@ -130,7 +130,7 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
   const cols = Array.from({ length: length });
 
   return (
-    <div className="flex flex-col items-center justify-center w-full max-w-2xl gap-1 bg-transparent">
+    <div className="flex flex-col items-center justify-center w-full max-w-2xl sm:mt-25 md:mt-30 gap-1 bg-transparent">
       {rows.map((_, rowIndex) => (
         <div key={`row-${rowIndex}`} id={`${rowIndex+1}`} className="flex gap-1 sm:gap-2 md:gap-3">
           {cols.map((_, colIndex) => (
@@ -142,7 +142,7 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
           ))}
         </div>
       ))}
-      {display && <div className="bg-white/50 dark:bg-white/80 px-2 py-2 my-1 mt-4 rounded-xl shadow-sm text-shadow-md text-center text-black text-xl">
+      {display && <div className="bg-white/50 dark:bg-white/80 px-2 py-2 my-1 mt-4 rounded-xl shadow-sm text-shadow-sm text-center text-black text-xl">
         <h1 className="text-center font-light text-2xl">
           {word}
         </h1>
