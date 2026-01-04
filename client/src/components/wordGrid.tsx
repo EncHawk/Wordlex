@@ -14,7 +14,7 @@ export const Tile = ({ letter = "", status = "empty" }) => {
       className={`
         w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20
         border-2 border-neutral-800 dark:border-neutral-300 flex items-center justify-center
-        text-2xl sm:text-3xl md:text-4xl font-bold uppercase rounded-sm
+        text-2xl sm:text-3xl md:text-4xl font-bold uppercase rounded-sm text-black dark:text-white
         transition-all duration-500
         ${statusStyles[status]}
       `}
@@ -43,7 +43,7 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
 
   useEffect(() => {
   const handleKey = (e: KeyboardEvent) => {
-    if (currentAttempt === ATTEMPTS){ setDisplay(true)}
+    if (ATTEMPTS === currentAttempt){ setDisplay(true)}
     const activeGuess = guesses[currentAttempt] || "";
 
     if (e.key.match(/^[a-zA-Z]$/)) {
@@ -56,6 +56,7 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
     } else if (e.key === "Backspace") {
       handleBack(activeGuess)
     } else if (e.key === "Enter") {
+      console.log(guesses)
       if (activeGuess.length === length && currentAttempt < ATTEMPTS) {
         // Calculate tile statuses for this guess
         const newStatuses = [...tileStatuses];
@@ -113,7 +114,7 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
           console.log("You won!");
         }
       } else {
-        setDisplay(true);
+        // setDisplay(true);
       }
     }
   };
@@ -135,8 +136,8 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
           {cols.map((_, colIndex) => (
             <Tile 
               key={`tile-${rowIndex+1}-${colIndex}`} 
-              letter={rowIndex===currentAttempt?guesses[currentAttempt][colIndex]:""}
-              status={rowIndex%2?`correct`:`absent`}
+              letter={guesses[rowIndex]?guesses[rowIndex][colIndex]:""}
+              status={'empty'}
             />
           ))}
         </div>
