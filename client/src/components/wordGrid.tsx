@@ -14,7 +14,7 @@ export const Tile = ({ letter = "", status = "empty" }) => {
       className={`
         w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20
         border-2 border-neutral-800 dark:border-neutral-300 flex items-center justify-center
-        text-2xl sm:text-3xl md:text-4xl font-bold uppercase rounded-sm animate-flip
+        text-2xl sm:text-3xl md:text-4xl font-bold uppercase rounded-sm
         transition-all duration-500
         ${statusStyles[status]}
       `}
@@ -26,34 +26,35 @@ export const Tile = ({ letter = "", status = "empty" }) => {
 
 export const Wgrid = ({ length, word }: { length: number; word: string }) => {
     const ATTEMPTS = 6;
+    const[tmp, setTmp] = useState<string[]>([])
     const [currentAttempt, setCurrentAttempt] = useState(0);
     const [guesses, setGuesses] = useState<string[]>(Array(ATTEMPTS).fill(""));
     const[display,setDisplay] = useState(false)
     const [tileStatuses, setTileStatuses] = useState<string[][]>(
       Array(ATTEMPTS).fill(null).map(() => Array(length).fill("empty"))
     );
-
-    function verify(){
-      
+    function handleBack(activeGuess:String){
+       if (activeGuess.length > 0) {
+        const newGuesses = [...guesses];
+        newGuesses[currentAttempt] = activeGuess.slice(0, -1);
+        setGuesses(newGuesses);
+      }
     }
 
   useEffect(() => {
   const handleKey = (e: KeyboardEvent) => {
-    if (currentAttempt >= ATTEMPTS) return;
+    if (currentAttempt === ATTEMPTS){ setDisplay(true)}
     const activeGuess = guesses[currentAttempt] || "";
 
     if (e.key.match(/^[a-zA-Z]$/)) {
       if (activeGuess.length < length) {
         const newGuesses = [...guesses];
         newGuesses[currentAttempt] = activeGuess + e.key.toUpperCase();
+        console.log(currentAttempt)
         setGuesses(newGuesses);
       }
     } else if (e.key === "Backspace") {
-      if (activeGuess.length > 0) {
-        const newGuesses = [...guesses];
-        newGuesses[currentAttempt] = activeGuess.slice(0, -1);
-        setGuesses(newGuesses);
-      }
+      handleBack(activeGuess)
     } else if (e.key === "Enter") {
       if (activeGuess.length === length && currentAttempt < ATTEMPTS) {
         // Calculate tile statuses for this guess
@@ -133,19 +134,19 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
         <div key={`row-${rowIndex}`} id={`${rowIndex+1}`} className="flex gap-1 sm:gap-2 md:gap-3">
           {cols.map((_, colIndex) => (
             <Tile 
-              key={`tile-${rowIndex}-${colIndex}`} 
-              letter="a"
-              status={rowIndex%2?`correct`:`present`}
+              key={`tile-${rowIndex+1}-${colIndex}`} 
+              letter={rowIndex===currentAttempt?guesses[currentAttempt][colIndex]:""}
+              status={rowIndex%2?`correct`:`absent`}
             />
           ))}
         </div>
       ))}
-      {display && <div className="bg-white/50 dark:bg-white/80 px-2 py-2 rounded-xl shadow-sm text-shadow-md text-center text-black text-xl">
+      {display && <div className="bg-white/50 dark:bg-white/80 px-2 py-2 my-1 mt-4 rounded-xl shadow-sm text-shadow-md text-center text-black text-xl">
         <h1 className="text-center font-light text-2xl">
           {word}
         </h1>
       </div> }
-      <Keyboard/>
+      <Keyboard/> {/* need to add callback functions into this to make changes to the tiles.*/}
     </div>
   );
 };

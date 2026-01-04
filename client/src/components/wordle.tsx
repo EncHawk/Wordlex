@@ -50,9 +50,9 @@ export default function Wordle() {
 
   if (error) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-xl text-red-600">
-          Failed to load word. Please try again.
+      <div className="flex items-center justify-center min-h-screen bg-neutral-200">
+        <div className="text-3xl text-red-600">
+          Failed to load word. Server's down, try again.
         </div>
       </div>
     );

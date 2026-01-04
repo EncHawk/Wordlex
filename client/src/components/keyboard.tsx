@@ -55,7 +55,7 @@ export default function Keyboard() {
         <div className="flex justify-center gap-1 md:gap-2">
           <button
             onClick={handleEnter}
-            className="flex-[1] sm:flex-[2] md:flex-[3] dark:bg-neutral-400/50 bg-neutral-400/90  text-shadow-md
+            className="flex-[1] sm:flex-[2] md:flex-[2] dark:bg-neutral-400/50 bg-neutral-400/90  text-shadow-md
             text-white font-semibold rounded-lg transition-all duration-150 py-3 sm:py-4 text-xs sm:text-sm md:text-lg 
             shadow-md hover:shadow-xl transform hover:scale-101 cursor-pointer"
           >
@@ -65,7 +65,7 @@ export default function Keyboard() {
             onClick={handleDelete}
             className="flex-1 dark:bg-red-600/70 bg-red-600/90
             text-white font-semibold rounded-lg transition-all duration-150 py-3 sm:py-4 text-xs sm:text-sm md:text-lg 
-            shadow-md hover:shadow-xl transform hover:scale-105 active:scale-95 cursor-pointer"
+            shadow-md hover:shadow-md transform hover:scale-10 active:scale-95 cursor-pointer"
           >
             ⌫
           </button>
