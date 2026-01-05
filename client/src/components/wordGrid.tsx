@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
 const rows = [
     ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
@@ -93,6 +93,9 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
       Array(ATTEMPTS).fill(null).map(() => Array(length).fill("empty"))
     );
     const handleKey = (e: string) => {
+      if(display){
+        return
+      }
     if (ATTEMPTS === currentAttempt){ setDisplay(true)}
     const activeGuess = guesses[currentAttempt] || "";
 
@@ -112,20 +115,20 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
     } 
     
     else if (e === "Enter") {
-      document.getElementById(`#${currentAttempt}`)?.classList.add('animate-flip')
-      if(currentAttempt+1 === ATTEMPTS) setDisplay(true)
+      // document.getElementById(`#${currentAttempt}`)?.classList.add('animate-flip')
+      if(currentAttempt+1 === ATTEMPTS || 
+        guesses[currentAttempt]===word.toUpperCase()) setDisplay(true)
+
       if (activeGuess.length === length && currentAttempt < ATTEMPTS) {
-        // Calculate tile statuses for this guess
         const newStatuses = [...tileStatuses];
         const guessArray = activeGuess.split("");
         const wordArray = word.toUpperCase().split("");
         const statusRow = Array(length).fill("empty");
 
-        // First pass: mark correct positions
-        const remainingWordLetters: string[] = [];
+        const remainingWordLetters: string[] = []; // tp keep track of whatis missing and what's not
         const remainingGuessLetters: string[] = [];
 
-        for (let i = 0; i < length; i++) {
+        for (let i = 0; i < length; i++) { //marking corrects
           if (guessArray[i] === wordArray[i]) {
             statusRow[i] = "correct";
           } else {
@@ -134,12 +137,11 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
           }
         }
 
-        // Second pass: mark present (wrong position) and absent
-        for (let i = 0; i < remainingGuessLetters.length; i++) {
+        for (let i = 0; i < remainingGuessLetters.length; i++) { // to check ifthe letter is present in the final guess. 
           const guessLetter = remainingGuessLetters[i];
-          const wordIndex = remainingWordLetters.indexOf(guessLetter);
+          const wordIndex = remainingWordLetters.indexOf(guessLetter); // returns an index
           if (wordIndex !== -1) {
-            const originalIndex = guessArray.findIndex(
+            const originalIndex = guessArray.findIndex( // if a letter from the remGuesses exists andits set to empty return its index
               (letter, idx) => letter === guessLetter && statusRow[idx] === "empty"
             );
             if (originalIndex !== -1) {
@@ -149,7 +151,7 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
           }
         }
 
-        // Mark remaining as absent
+        // set rest as absent since we checked for the present and the corrects.
         for (let i = 0; i < length; i++) {
           if (statusRow[i] === "empty") {
             statusRow[i] = "absent";
@@ -159,16 +161,11 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
         newStatuses[currentAttempt] = statusRow;
         setTileStatuses(newStatuses);
 
-        // Move to next attempt
+        // move to next attempt,since the currentAttempt is 0based.
         if (currentAttempt < ATTEMPTS - 1) {
           setCurrentAttempt(currentAttempt + 1);
         } else {
           setCurrentAttempt(ATTEMPTS);
-        }
-
-        // Check if won
-        if (activeGuess.toUpperCase() === word.toUpperCase()) {
-          console.log("You won!");
         }
       } else {
         // setDisplay(true);
@@ -197,14 +194,14 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
               key={`tile-${rowIndex+1}-${colIndex}`} 
               id={`tile-${rowIndex+1}`} 
               letter={guesses[rowIndex]?guesses[rowIndex][colIndex]:""}
-              status={'empty'}
+              status={tileStatuses[rowIndex]?.[colIndex] || 'empty'}
             />
           ))}
         </div>
       ))}
       {display && <div className="bg-white/50 dark:bg-white/80 px-2 py-2 my-1 mt-4 rounded-xl shadow-sm text-shadow-sm text-center text-black text-xl">
-        <h1 className="text-center font-light text-2xl">
-          {word}
+        <h1 className="text-center font-light text-xl">
+          {word.toUpperCase()}
         </h1>
       </div> }
       <Keyboard handleKey={handleKey}/> {/* need to add callback functions into this to make changes to the tiles.*/}

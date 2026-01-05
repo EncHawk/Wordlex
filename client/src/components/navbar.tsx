@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import{Sun, Moon} from 'lucide-react'
 import { Link } from 'react-router-dom'
 
@@ -11,14 +11,36 @@ export const Navbar = ()=>{
     useEffect(()=>{
         window.addEventListener('scroll',handleScroll)
         return ()=>{ window.removeEventListener('scroll',handleScroll)}
+    }, [])
+    
+    // Initialize dark state from DOM (which is set in main.tsx)
+    const [dark,setDark] = useState(() => {
+        return document.documentElement.classList.contains('dark')
     })
-    const [dark,setDark] = useState(false)
+    
+    // Sync with DOM changes (in case theme changes elsewhere)
+    useEffect(() => {
+        const observer = new MutationObserver(() => {
+            setDark(document.documentElement.classList.contains('dark'))
+        })
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['class']
+        })
+        return () => observer.disconnect()
+    }, [])
+    
     const handleThemeChange=()=>{
-        setDark(!dark)
-        const currTheme = document.documentElement.classList.contains('dark')
-        ?'light':'dark'
-        document.documentElement.classList.toggle('dark')
-        localStorage.setItem('TailwindTheme',currTheme)
+        const isCurrentlyDark = document.documentElement.classList.contains('dark')
+        if (isCurrentlyDark) {
+            document.documentElement.classList.remove('dark')
+            localStorage.setItem('TailwindTheme', 'light')
+            setDark(false)
+        } else {
+            document.documentElement.classList.add('dark')
+            localStorage.setItem('TailwindTheme', 'dark')
+            setDark(true)
+        }
     }
     return (
         <div className={`fixed top-2 sm:top-4 left-1/2 -translate-x-1/2 z-100  flex items-center justify-between gap-5 inset-shadow-lg transition-all delay-200

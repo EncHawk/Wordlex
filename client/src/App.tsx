@@ -6,9 +6,7 @@ import { Hero } from './components/hero'
 
 function App() {
   
-  const [dark, setDark] = useState(
-    document.documentElement.classList.contains('dark')
-  )
+  const [dark, setDark] = useState(true)
   useEffect(() => {
     const observer = new MutationObserver(() => {
       setDark(document.documentElement.classList.contains('dark'))

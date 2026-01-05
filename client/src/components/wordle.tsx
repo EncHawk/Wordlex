@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Wgrid } from "./wordGrid";
 import { Navbar } from "./navbar";
 
@@ -8,7 +8,7 @@ export default function Wordle() {
   const [loading, setLoading] = useState(true);
   const hasFetched = useRef(false); // Prevent multiple requests
 
-  const url = "http://localhost:8080/api/";
+  const url = "/api/";
 
   useEffect(() => {
     // Prevent multiple requests
