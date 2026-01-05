@@ -54,9 +54,9 @@ export const Navbar = ()=>{
                  dark:bg-violet-800 dark:text-neutral-300 text-xl border border-black dark:border-neutral-300 border-y-0 rounded-full py-px px-2 sm:px-4'>
                     <Link to={'/'}>Sign in</Link>
                 </button>
-                <button onClick={handleThemeChange} className='cursor-pointer' >
+                <span onClick={handleThemeChange} tabIndex={-1} className='cursor-pointer' >
                     {dark?<Sun/>:<Moon/>}
-                </button>
+                </span>
                 
             </div>
         </div>

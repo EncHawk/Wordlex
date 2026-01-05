@@ -1,12 +1,12 @@
 import express from 'express'
-import mongoose from 'mongoose'
-// import { data, prevUsed } from './data'
+import mongoose, { Error } from 'mongoose'
 import { globalCatch } from './utils'
 import * as zod from 'zod'
 import jwt from 'jsonwebtoken'
 import {User,Words} from './db'
 import type { ZodUndefinedDef } from 'zod/v3'
 import { limiter } from './rateLimit'
+// import { data } from './data'
 
 const wordRouter = express.Router()
 const secret:any= "dilip"
@@ -17,7 +17,9 @@ interface wordType{
     length:number,
     word:string,
     description:string,
-    difficulty:string
+    difficulty:string,
+    currentWord:Boolean,
+    previousWord:Boolean
 }
 
 async function findWord(){
@@ -50,10 +52,19 @@ async function randomWord() {
   return word;
 }
 
+
 // const list = words
 // const prev = prevUsed
 
 // user signin, exception
+wordRouter.get('/status',(req,res)=>{
+  // populateDB(data) // use when you need to update smtn
+  return res.status(200).send({
+    success:true,
+    msg:"all systems functional, ready for propulsioon!!"
+  })
+})
+
 wordRouter.post('/signin',async(req,res)=>{ 
   // const{name,email,password} = req.body
   const input = req.body
@@ -164,6 +175,37 @@ wordRouter.post('/leaders',async(req,res)=>{
     return res.status(403).send({
       success:false,
       msg:"invalid token!"
+    })
+  }
+})
+
+wordRouter.get('/check/',async(req,res)=>{
+  const checkword:any= req.query.word
+  try{
+    const word = await Words.findOne({
+      word:checkword.toString()
+    })
+    if(word){
+      return res.status(200).send({
+        success:true,
+        msg:"word found, render error",
+        word:word
+      })
+    }
+    else{
+      return res.status(200).send({
+        success:true,
+        checkword,
+        msg:"no word found, continue",
+        word:word
+      })
+    }
+  }
+  catch(Err:any){
+    console.log(Err.message)
+    return res.status(503).send({
+      success:false,
+      msg:"something went wrong, could not fetch."
     })
   }
 })

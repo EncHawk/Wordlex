@@ -26,7 +26,7 @@ export const Keyboard= ({handleKey}:keyboardProps)=> {
               <button
                 key={key}
                 onClick={()=>handleKey(key)}
-                className="flex-1 min-w-0 aspect-square bg-slate-700 hover:bg-slate-600 active:bg-slate-500
+                className="flex-1 min-w-0 aspect-square bg-slate-700 dark:bg-slate-600 hover:bg-slate-600 dark:hover:bg-slate-500 active:bg-slate-500 dark:active:bg-slate-400
                  text-white font-semibold transition-all duration-150 text-xs sm:text-sm px-1 sm:px-4 py-px rounded-sm cursor-pointer
                  md:text-lg shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95"
               >
@@ -40,7 +40,7 @@ export const Keyboard= ({handleKey}:keyboardProps)=> {
         <div className="flex justify-center gap-1 md:gap-2">
           <button
             onClick={()=>handleKey('Enter')}
-            className="flex-[1] sm:flex-[2] md:flex-[2] dark:bg-neutral-400/50 bg-neutral-400/90  text-shadow-md
+            className="flex-[1] sm:flex-[2] md:flex-[2] dark:bg-neutral-400/50 bg-neutral-400/90 hover:bg-neutral-400/40  text-shadow-md
             text-white font-semibold rounded-lg transition-all duration-150 py-3 sm:py-4 text-xs sm:text-sm md:text-lg 
             shadow-md hover:shadow-xl transform hover:scale-101 cursor-pointer"
           >
@@ -48,9 +48,9 @@ export const Keyboard= ({handleKey}:keyboardProps)=> {
           </button>
           <button
             onClick={()=>handleKey('Backspace')}
-            className="flex-1 dark:bg-red-600/70 bg-red-600/90
+            className="flex-1 dark:bg-red-600/70 bg-red-600/90 hover:bg-red-600/70
             text-white font-semibold rounded-lg transition-all duration-150 py-3 sm:py-4 text-xs sm:text-sm md:text-lg 
-            shadow-md hover:shadow-md transform hover:scale-10 active:scale-95 cursor-pointer"
+            shadow-md hover:shadow-md transform hover:scale-101 active:scale-101 cursor-pointer"
           >
             ⌫
           </button>
@@ -72,7 +72,7 @@ export const Tile = ({ letter = "", status = "empty", id=""}) => {
     <div
     id={id}
       className={`
-        w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20
+        w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 my-1
         border-2 border-neutral-800 dark:border-neutral-300 flex items-center justify-center
         text-2xl sm:text-3xl md:text-4xl font-bold uppercase rounded-sm text-black dark:text-white
         transition-all duration-500
@@ -115,7 +115,9 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
     } 
     
     else if (e === "Enter") {
-      // document.getElementById(`#${currentAttempt}`)?.classList.add('animate-flip')
+      document.getElementById(`#${currentAttempt+1}`)?.classList.add('animate-row')
+      // make a db call to show that any given word isnt in the list of the words we have
+      // allowing the user to not lose any guesses
       if(currentAttempt+1 === ATTEMPTS || 
         guesses[currentAttempt]===word.toUpperCase()) setDisplay(true)
 
@@ -192,7 +194,6 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
           {cols.map((_, colIndex) => (
             <Tile 
               key={`tile-${rowIndex+1}-${colIndex}`} 
-              id={`tile-${rowIndex+1}`} 
               letter={guesses[rowIndex]?guesses[rowIndex][colIndex]:""}
               status={tileStatuses[rowIndex]?.[colIndex] || 'empty'}
             />

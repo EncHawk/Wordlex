@@ -13,15 +13,18 @@ export async function populateDB(words:wordType[]){
             try{
                 const wordt = await new Words({
                     length: item.length,
-                    word:item.word,
+                    word:item.word.toUpperCase(),
                     description:item.description,
                     difficulty:item.difficulty,
-                    currentWord:false
+                    currentWord:false,
+                    previousWord:false
                 })
                 wordt.save()
+                return "done"
             }
             catch(er){
                 console.log(er)
+                return "fucked"
             }
         })
     }

@@ -42,17 +42,27 @@ export default function Wordle() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-xl text-gray-600">Loading...</div>
+      <div className="flex flex-col items-center justify-center bg-gradient-to-b
+       from-neutral-200 to-blue-200 dark:bg-gradient-to-b w-full min-h-screen 
+       dark:from-neutral-950 dark:to-slate-900">
+        <Navbar />
+        <div className="flex items-center justify-center flex-1">
+          <div className="text-xl text-gray-600 dark:text-gray-400">Loading...</div>
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-neutral-200">
-        <div className="text-3xl text-red-600">
-          Failed to load word. Server's down, try again.
+      <div className="flex flex-col items-center justify-center bg-gradient-to-b
+       from-neutral-200 to-blue-200 dark:bg-gradient-to-b w-full min-h-screen 
+       dark:from-neutral-950 dark:to-slate-900">
+        <Navbar />
+        <div className="flex items-center justify-center flex-1">
+          <div className="text-3xl text-red-600 dark:text-red-400">
+            Failed to load word. Server's down, try again.
+          </div>
         </div>
       </div>
     );

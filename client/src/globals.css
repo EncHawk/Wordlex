@@ -14,9 +14,22 @@
     --color-semilight: #fafafa;
 }
 
-.animate-flip{
-    animation: flippy 3.5s ease-in-out;
-    animation-delay:100ms;
+button{
+    &:active{
+        outline:none;
+    }
+    &:focus{
+        outline:none;
+    }
+}
+
+.tile {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.animate-row .tile {
+  animation: flippy 0.6s ease-in-out forwards;
 }
 @keyframes flippy{
     0%{
