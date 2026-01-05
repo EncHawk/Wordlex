@@ -1,7 +1,66 @@
 import React, { useEffect, useState, useRef } from "react";
-import Keyboard from "./keyboard";
 
-export const Tile = ({ letter = "", status = "empty" }) => {
+const rows = [
+    ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+    ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+    ['Z', 'X', 'C', 'V', 'B', 'N', 'M']
+  ];
+type keyboardProps={
+  handleKey:(e:string)=>void
+}
+
+export const Keyboard= ({handleKey}:keyboardProps)=> {
+  return (
+    <div className=" mt-2 w-full max-w-5xl mx-auto flex items-center justify-center p-4">
+      <div className="space-y-2 w-full">
+        {rows.map((row, rowIndex) => (
+          <div 
+            key={rowIndex} 
+            className="flex justify-center gap-1 md:gap-2"
+            style={{ 
+              paddingLeft: rowIndex === 1 ? '5%' : rowIndex === 2 ? '10%' : '0',
+              paddingRight: rowIndex === 1 ? '5%' : rowIndex === 2 ? '10%' : '0'
+            }}
+          >
+            {row.map((key) => (
+              <button
+                key={key}
+                onClick={()=>handleKey(key)}
+                className="flex-1 min-w-0 aspect-square bg-slate-700 hover:bg-slate-600 active:bg-slate-500
+                 text-white font-semibold transition-all duration-150 text-xs sm:text-sm px-1 sm:px-4 py-px rounded-sm cursor-pointer
+                 md:text-lg shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95"
+              >
+                {key}
+              </button>
+            ))}
+          </div>
+        ))}
+
+        {/* Bottom row with Enter and Delete */}
+        <div className="flex justify-center gap-1 md:gap-2">
+          <button
+            onClick={()=>handleKey('Enter')}
+            className="flex-[1] sm:flex-[2] md:flex-[2] dark:bg-neutral-400/50 bg-neutral-400/90  text-shadow-md
+            text-white font-semibold rounded-lg transition-all duration-150 py-3 sm:py-4 text-xs sm:text-sm md:text-lg 
+            shadow-md hover:shadow-xl transform hover:scale-101 cursor-pointer"
+          >
+            ENTER
+          </button>
+          <button
+            onClick={()=>handleKey('Backspace')}
+            className="flex-1 dark:bg-red-600/70 bg-red-600/90
+            text-white font-semibold rounded-lg transition-all duration-150 py-3 sm:py-4 text-xs sm:text-sm md:text-lg 
+            shadow-md hover:shadow-md transform hover:scale-10 active:scale-95 cursor-pointer"
+          >
+            ⌫
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export const Tile = ({ letter = "", status = "empty", id=""}) => {
   const statusStyles:any= {
     empty: "border-neutral-500 dark:border-neutral-700",
     correct: "bg-green-600 border-green-500 text-white", // coorect
@@ -11,6 +70,7 @@ export const Tile = ({ letter = "", status = "empty" }) => {
 
   return (
     <div
+    id={id}
       className={`
         w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20
         border-2 border-neutral-800 dark:border-neutral-300 flex items-center justify-center
@@ -26,36 +86,33 @@ export const Tile = ({ letter = "", status = "empty" }) => {
 
 export const Wgrid = ({ length, word }: { length: number; word: string }) => {
     const ATTEMPTS = 6;
-    const[tmp, setTmp] = useState<string[]>([])
     const [currentAttempt, setCurrentAttempt] = useState(0);
     const [guesses, setGuesses] = useState<string[]>(Array(ATTEMPTS).fill(""));
     const[display,setDisplay] = useState(false)
     const [tileStatuses, setTileStatuses] = useState<string[][]>(
       Array(ATTEMPTS).fill(null).map(() => Array(length).fill("empty"))
     );
-    function handleBack(activeGuess:String){
+    const handleKey = (e: string) => {
+    if (ATTEMPTS === currentAttempt){ setDisplay(true)}
+    const activeGuess = guesses[currentAttempt] || "";
+
+    if (e.match(/^[a-zA-Z]$/)) {
+      if (activeGuess.length < length) {
+        const newGuesses = [...guesses];
+        newGuesses[currentAttempt] = activeGuess + e.toUpperCase();
+        console.log(currentAttempt)
+        setGuesses(newGuesses);
+      }
+    } else if (e === "Backspace") {
        if (activeGuess.length > 0) {
         const newGuesses = [...guesses];
         newGuesses[currentAttempt] = activeGuess.slice(0, -1);
         setGuesses(newGuesses);
       }
-    }
-
-  useEffect(() => {
-  const handleKey = (e: KeyboardEvent) => {
-    if (ATTEMPTS === currentAttempt){ setDisplay(true)}
-    const activeGuess = guesses[currentAttempt] || "";
-
-    if (e.key.match(/^[a-zA-Z]$/)) {
-      if (activeGuess.length < length) {
-        const newGuesses = [...guesses];
-        newGuesses[currentAttempt] = activeGuess + e.key.toUpperCase();
-        console.log(currentAttempt)
-        setGuesses(newGuesses);
-      }
-    } else if (e.key === "Backspace") {
-      handleBack(activeGuess)
-    } else if (e.key === "Enter") {
+    } 
+    
+    else if (e === "Enter") {
+      document.getElementById(`#${currentAttempt}`)?.classList.add('animate-flip')
       if(currentAttempt+1 === ATTEMPTS) setDisplay(true)
       if (activeGuess.length === length && currentAttempt < ATTEMPTS) {
         // Calculate tile statuses for this guess
@@ -118,10 +175,12 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
       }
     }
   };
-  
-  document.addEventListener("keydown", handleKey);
-  return () => {
-    document.removeEventListener("keydown", handleKey);
+
+  useEffect(() => {
+    const handleKeyboardEvent = (e:KeyboardEvent)=>{handleKey(e.key)}
+    document.addEventListener("keydown", handleKeyboardEvent);
+    return () => {
+    document.removeEventListener("keydown", handleKeyboardEvent);
   };
 }, [currentAttempt, guesses, tileStatuses, length, word]); 
 
@@ -136,6 +195,7 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
           {cols.map((_, colIndex) => (
             <Tile 
               key={`tile-${rowIndex+1}-${colIndex}`} 
+              id={`tile-${rowIndex+1}`} 
               letter={guesses[rowIndex]?guesses[rowIndex][colIndex]:""}
               status={'empty'}
             />
@@ -147,7 +207,7 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
           {word}
         </h1>
       </div> }
-      <Keyboard/> {/* need to add callback functions into this to make changes to the tiles.*/}
+      <Keyboard handleKey={handleKey}/> {/* need to add callback functions into this to make changes to the tiles.*/}
     </div>
   );
 };
