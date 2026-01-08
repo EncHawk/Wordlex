@@ -11,7 +11,6 @@ export default function Wordle() {
   const url = "/api/";
 
   useEffect(() => {
-    // Prevent multiple requests
     if (hasFetched.current) return;
     hasFetched.current = true;
 
