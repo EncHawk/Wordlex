@@ -1,15 +1,44 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 const rows = [
     ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
     ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
     ['Z', 'X', 'C', 'V', 'B', 'N', 'M']
   ];
-type keyboardProps={
-  handleKey:(e:string)=>void
+
+type InputStyles = {
+  empty: string;
+  correct: string;
+  present: string;
+  absent: string;
 }
 
-export const Keyboard= ({handleKey}:keyboardProps)=> {
+type TileStatus = keyof InputStyles;
+
+type keyboardProps={
+  handleKey:(e:string)=>void
+  letterStatuses: Record<string, TileStatus>
+}
+
+export const Keyboard= ({handleKey, letterStatuses}:keyboardProps)=> {
+  const getKeyStatusClass = (letter: string): string => {
+    const status = letterStatuses[letter];
+    if (!status || status === "empty") {
+      return "bg-slate-700 dark:bg-slate-600 hover:bg-slate-600 dark:hover:bg-slate-500 active:bg-slate-500 dark:active:bg-slate-400 text-white";
+    }
+    
+    switch (status) {
+      case "correct":
+        return "bg-green-600 border-green-500 text-white hover:bg-green-700 dark:hover:bg-green-700";
+      case "present":
+        return "bg-amber-400 border-amber-500 text-white hover:bg-amber-500 dark:hover:bg-amber-500";
+      case "absent":
+        return "bg-neutral-500 border-neutral-500 text-white hover:bg-neutral-600 dark:hover:bg-neutral-600";
+      default:
+        return "bg-slate-700 dark:bg-slate-600 hover:bg-slate-600 dark:hover:bg-slate-500 active:bg-slate-500 dark:active:bg-slate-400 text-white";
+    }
+  };
+
   return (
     <div className=" mt-2 w-full max-w-5xl mx-auto flex items-center justify-center p-4">
       <div className="space-y-2 w-full">
@@ -25,10 +54,10 @@ export const Keyboard= ({handleKey}:keyboardProps)=> {
             {row.map((key) => (
               <button
                 key={key}
+                id={key}
                 onClick={()=>handleKey(key)}
-                className="flex-1 min-w-0 aspect-square bg-slate-700 dark:bg-slate-600 hover:bg-slate-600 dark:hover:bg-slate-500 active:bg-slate-500 dark:active:bg-slate-400
-                 text-white font-semibold transition-all duration-150 text-xs sm:text-sm px-1 sm:px-4 py-px rounded-sm cursor-pointer
-                 md:text-lg shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95"
+                className={`flex-1 min-w-0 aspect-square border-2 font-semibold transition-all duration-150 text-xs sm:text-sm px-1 sm:px-4 py-px rounded-sm cursor-pointer
+                 md:text-lg shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95 ${getKeyStatusClass(key)}`}
               >
                 {key}
               </button>
@@ -58,15 +87,6 @@ export const Keyboard= ({handleKey}:keyboardProps)=> {
     </div>
   );
 }
-
-type InputStyles = {
-  empty: string;
-  correct: string;
-  present: string;
-  absent: string;
-}
-
-type TileStatus = keyof InputStyles;
 
 export const Tile = ({ 
   letter = "", 
@@ -108,7 +128,9 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
     const [tileStatuses, setTileStatuses] = useState<TileStatus[][]>(
       Array(ATTEMPTS).fill(null).map(() => Array(length).fill("empty"))
     );
-    const handleKey = (e: string) => {
+    // Track letter statuses for keyboard: highest priority status per letter (correct > present > absent)
+    const [letterStatuses, setLetterStatuses] = useState<Record<string, TileStatus>>({});
+    const handleKey = useCallback((e: string) => {
       if(display){
         return
       }
@@ -176,6 +198,29 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
         newStatuses[currentAttempt] = statusRow as TileStatus[];
         setTileStatuses(newStatuses);
 
+        // Update letter statuses for keyboard (highest priority: correct > present > absent)
+        setLetterStatuses((prevStatuses) => {
+          const newLetterStatuses = { ...prevStatuses };
+          const priority: Record<TileStatus, number> = {
+            correct: 3,
+            present: 2,
+            absent: 1,
+            empty: 0,
+          };
+
+          for (let i = 0; i < length; i++) {
+            const letter = guessArray[i];
+            const newStatus = statusRow[i] as TileStatus;
+            const currentStatus = newLetterStatuses[letter];
+            
+            // Only update if new status has higher priority
+            if (!currentStatus || priority[newStatus] > priority[currentStatus as TileStatus]) {
+              newLetterStatuses[letter] = newStatus;
+            }
+          }
+          return newLetterStatuses;
+        });
+
         if (currentAttempt < ATTEMPTS - 1) {
           setCurrentAttempt(currentAttempt + 1);
         } else {
@@ -183,7 +228,7 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
         }
       }
     }
-  };
+  }, [display, currentAttempt, guesses, length, word]);
 
   useEffect(() => {
     const handleKeyboardEvent = (e:KeyboardEvent)=>{handleKey(e.key)}
@@ -191,7 +236,7 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
     return () => {
     document.removeEventListener("keydown", handleKeyboardEvent);
   };
-}, [currentAttempt, guesses, tileStatuses, length, word, handleKey]); 
+}, [handleKey]); 
 
   const rows = Array.from({ length: ATTEMPTS });
   const cols = Array.from({ length: length });
@@ -214,7 +259,7 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
           {word.toUpperCase()}
         </h1>
       </div> }
-      <Keyboard handleKey={handleKey}/>
+      <Keyboard handleKey={handleKey} letterStatuses={letterStatuses}/>
     </div>
   );
 };
