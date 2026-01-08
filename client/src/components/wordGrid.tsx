@@ -9,6 +9,9 @@ type keyboardProps={
   handleKey:(e:string)=>void
 }
 
+// JUST DO NOT TOUCH THIS FILE, AN HOUR TOO MANY HAVE BEEN SPENT TO MAKE IT WORK.
+// EVEN A MENTAL BREAKDOWN. LEAVE THIS ALONE!
+
 export const Keyboard= ({handleKey}:keyboardProps)=> {
   return (
     <div className=" mt-2 w-full max-w-5xl mx-auto flex items-center justify-center p-4">
@@ -62,7 +65,7 @@ export const Keyboard= ({handleKey}:keyboardProps)=> {
 
 export const Tile = ({ letter = "", status = "empty", id=""}) => {
   const statusStyles:any= {
-    empty: "border-neutral-500 dark:border-neutral-700",
+    empty: "border-neutral-500 dark:border-neutral-500",
     correct: "bg-green-600 border-green-500 text-white", // coorect
     present: "bg-amber-400 border-amber-500 text-white", // wrong-place
     absent: "bg-neutral-500 border-neutral-500 text-white", // incorrect
@@ -73,7 +76,7 @@ export const Tile = ({ letter = "", status = "empty", id=""}) => {
     id={id}
       className={`
         w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 my-1
-        border-2 border-neutral-800 dark:border-neutral-300 flex items-center justify-center
+        border-2 border-neutral-600 dark:border-green-100 flex items-center justify-center
         text-2xl sm:text-3xl md:text-4xl font-bold uppercase rounded-sm text-black dark:text-white
         transition-all duration-500
         ${statusStyles[status]}

@@ -71,7 +71,7 @@ export default function Wordle() {
   return (
     <div className="flex flex-col items-center justify-center bg-gradient-to-b
      from-neutral-200 to-blue-200 dark:bg-gradient-to-b w-full min-h-screen 
-     dark:from-neutral-950 dark:to-slate-900">
+     dark:from-slate-950 dark:to-neutral-900">
       <div className="flex items-center rounded-lg bg-transparent justify-center min-h-screen mx-auto w-full h-full
       border border-y-0 dark:border-neutral-600">
         <Navbar/>
