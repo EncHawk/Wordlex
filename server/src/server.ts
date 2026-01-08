@@ -11,7 +11,7 @@ import cors from 'cors'
 const app = express();
 app.use(express.json());
 app.use(cors({
-    origin:"https://wordlex-two.vercel.app/",
+    origin:"https://wordlex-two.vercel.app",
     credentials:true
 }))
 app.use(globalCatch)
