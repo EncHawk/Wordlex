@@ -63,8 +63,14 @@ export const Keyboard= ({handleKey}:keyboardProps)=> {
   );
 }
 
+type inputStyles={
+  empty:string,
+  correct:string,
+  present:string,
+  absent:string
+}
 export const Tile = ({ letter = "", status = "empty", id=""}) => {
-  const statusStyles:any= {
+  const statusStyles:inputStyles= {
     empty: "border-neutral-500 dark:border-neutral-500",
     correct: "bg-green-600 border-green-500 text-white", // coorect
     present: "bg-amber-400 border-amber-500 text-white", // wrong-place
@@ -184,7 +190,7 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
     return () => {
     document.removeEventListener("keydown", handleKeyboardEvent);
   };
-}, [currentAttempt, guesses, tileStatuses, length, word]); 
+}, [currentAttempt, guesses, tileStatuses, length, word, handleKey]); 
 
   // Create a 2D array structure: 6 rows, 'length' columns
   const rows = Array.from({ length: ATTEMPTS });
