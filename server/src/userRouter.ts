@@ -7,6 +7,7 @@ import {User,Words} from './db'
 import type { ZodUndefinedDef } from 'zod/v3'
 import { limiter } from './rateLimit'
 import dotenv from 'dotenv'
+import { populateDB } from './populatedb'
 dotenv.config()
 
 // import { data } from './data'

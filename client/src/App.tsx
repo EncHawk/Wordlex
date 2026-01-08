@@ -30,7 +30,7 @@ function App() {
 
   return ( // the outer one is the layout!
     <div className=' relative flex flex-col items-center justify-center h-100% 
-    w-full min-h-screen dark:bg-black bg-sky-500 dark:text-white pb-1000 dark:selection:bg-neutral-200/10 dark:selection:text-white
+    w-full min-h-screen dark:bg-black bg-sky-500 dark:text-white  dark:selection:bg-neutral-200/10 dark:selection:text-white
      selection:bg-neutral-200 selection:text-black'>
       <div 
         style={{
