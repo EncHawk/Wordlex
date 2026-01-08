@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Container } from './components/container'
 import { Navbar } from './components/navbar'
 import { Hero } from './components/hero'
+import { LetterGrid } from './components/letterGrid'
 
 
 function App() {
@@ -25,8 +26,8 @@ function App() {
   const gradient = dark
   ?`radial-gradient(circle at top, transparent 0%, var(--color-semidark) 79%, var(--color-dark) 100%), 
   radial-gradient(circle at bottom, transparent 80%, var(--color-dark) 100%`
-  :`radial-gradient(circle at top, transparent 0%, var(--color-semilight) 80%, var(--color-semilight) 100%),
-  radial-gradient(circle at bottom, transparent 80%, var(--color-semilight) 100%`
+  :`radial-gradient(circle at top, transparent 0%, var(--color-semilight) 95%, var(--color-semilight) 100%),
+  radial-gradient(circle at center, transparent 100%, var(--color-semilight) 100%`
 
   return ( // the outer one is the layout!
     <div className=' relative flex flex-col items-center justify-center h-100% 
@@ -38,13 +39,15 @@ function App() {
           linear-gradient(90deg,${grid} 0.25px, transparent 1px)`,
           backgroundSize:'40px 40px'
         }}
-      className='absolute inset-0'></div>
+      className='absolute inset-0'>
+        <LetterGrid dark= {dark}/>
+      </div>
         <Navbar/>
       <Container>
-        <div style={{backgroundImage:gradient}} className='absolute inset-0'></div>
+        <div style={{backgroundImage:gradient}} className='absolute inset-0 z-10'></div>
         <Hero/>
       </Container>
-      <div className=' w-full h-125 flex justify-center items-center mx-auto z-10 px-2 py-8 bg-neutral-100 dark:bg-neutral-900'>
+      {/* <div className=' w-full h-125 flex justify-center items-center mx-auto z-10 px-2 py-8 bg-neutral-100 dark:bg-neutral-900'>
         <div className='grid grid-cols-4 grid-rows-5 gap-4 auto-rows-fr h-100 w-full max-w-3xl'>
           <div className='bg-blue-400 rounded-xl px-6 py-6 col-span-2 row-span-2 
           hover:scale-[1.02] transition-transform duration-300'></div>
@@ -60,7 +63,7 @@ function App() {
           <div className='bg-indigo-400 rounded-xl px-6 py-6 col-span-2 row-span-2
           hover:scale-[1.02] transition-transform duration-300'></div>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

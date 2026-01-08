@@ -55,10 +55,12 @@ export const Navbar = ()=>{
                 </span>
             </h1>
             <div className='flex items-center justify-center gap-4 px-4 py-px transition-all duration-500'>
-                {/* <button className='cursor-pointer shadow-sm text-shadow-sm bg-violet-500 text-white hover:bg-violet-400 transition duration-150
-                 dark:bg-violet-800 dark:text-neutral-300 text-sm border border-black dark:border-neutral-300 border-y-0 rounded-full py-[0.5px] px-1 sm:px-4'>
-                    <Link to={'/'}>Sign in</Link>
-                </button> */}
+                <Link to={'/'}>
+                    <button className='cursor-pointer shadow-sm text-shadow-sm bg-violet-500 text-white hover:bg-violet-400 transition duration-150
+                    dark:bg-violet-800 dark:text-neutral-300 text-sm border border-black dark:border-neutral-300 border-y-0 rounded-full py-[0.5px] px-1 sm:px-4'>
+                        Sign in
+                    </button>
+                </Link>
                 <span onClick={handleThemeChange} className='cursor-pointer' >
                     {dark?<Sun size={18}/>:<Moon size={18}/>}
                 </span>
