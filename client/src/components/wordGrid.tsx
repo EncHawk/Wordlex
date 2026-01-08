@@ -9,9 +9,6 @@ type keyboardProps={
   handleKey:(e:string)=>void
 }
 
-// JUST DO NOT TOUCH THIS FILE, AN HOUR TOO MANY HAVE BEEN SPENT TO MAKE IT WORK.
-// EVEN A MENTAL BREAKDOWN. LEAVE THIS ALONE!
-
 export const Keyboard= ({handleKey}:keyboardProps)=> {
   return (
     <div className=" mt-2 w-full max-w-5xl mx-auto flex items-center justify-center p-4">
@@ -39,7 +36,6 @@ export const Keyboard= ({handleKey}:keyboardProps)=> {
           </div>
         ))}
 
-        {/* Bottom row with Enter and Delete */}
         <div className="flex justify-center gap-1 md:gap-2">
           <button
             onClick={()=>handleKey('Enter')}
@@ -63,18 +59,29 @@ export const Keyboard= ({handleKey}:keyboardProps)=> {
   );
 }
 
-type inputStyles={
-  empty:string,
-  correct:string,
-  present:string,
-  absent:string
+type InputStyles = {
+  empty: string;
+  correct: string;
+  present: string;
+  absent: string;
 }
-export const Tile = ({ letter = "", status = "empty", id=""}) => {
-  const statusStyles:inputStyles= {
+
+type TileStatus = keyof InputStyles;
+
+export const Tile = ({ 
+  letter = "", 
+  status = "empty", 
+  id = "" 
+}: { 
+  letter?: string; 
+  status?: TileStatus; 
+  id?: string; 
+}) => {
+  const statusStyles: InputStyles = {
     empty: "border-neutral-500 dark:border-neutral-500",
-    correct: "bg-green-600 border-green-500 text-white", // coorect
-    present: "bg-amber-400 border-amber-500 text-white", // wrong-place
-    absent: "bg-neutral-500 border-neutral-500 text-white", // incorrect
+    correct: "bg-green-600 border-green-500 text-white",
+    present: "bg-amber-400 border-amber-500 text-white",
+    absent: "bg-neutral-500 border-neutral-500 text-white",
   };
 
   return (
@@ -98,7 +105,7 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
     const [currentAttempt, setCurrentAttempt] = useState(0);
     const [guesses, setGuesses] = useState<string[]>(Array(ATTEMPTS).fill(""));
     const[display,setDisplay] = useState(false)
-    const [tileStatuses, setTileStatuses] = useState<string[][]>(
+    const [tileStatuses, setTileStatuses] = useState<TileStatus[][]>(
       Array(ATTEMPTS).fill(null).map(() => Array(length).fill("empty"))
     );
     const handleKey = (e: string) => {
@@ -124,9 +131,7 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
     } 
     
     else if (e === "Enter") {
-      document.getElementById(`#${currentAttempt+1}`)?.classList.add('animate-row')
-      // make a db call to show that any given word isnt in the list of the words we have
-      // allowing the user to not lose any guesses
+      document.getElementById(`${currentAttempt+1}`)?.classList.add('animate-row')
       if(currentAttempt+1 === ATTEMPTS || 
         guesses[currentAttempt]===word.toUpperCase()) setDisplay(true)
 
@@ -136,10 +141,10 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
         const wordArray = word.toUpperCase().split("");
         const statusRow = Array(length).fill("empty");
 
-        const remainingWordLetters: string[] = []; // tp keep track of whatis missing and what's not
+        const remainingWordLetters: string[] = [];
         const remainingGuessLetters: string[] = [];
 
-        for (let i = 0; i < length; i++) { //marking corrects
+        for (let i = 0; i < length; i++) {
           if (guessArray[i] === wordArray[i]) {
             statusRow[i] = "correct";
           } else {
@@ -148,11 +153,11 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
           }
         }
 
-        for (let i = 0; i < remainingGuessLetters.length; i++) { // to check ifthe letter is present in the final guess. 
+        for (let i = 0; i < remainingGuessLetters.length; i++) {
           const guessLetter = remainingGuessLetters[i];
-          const wordIndex = remainingWordLetters.indexOf(guessLetter); // returns an index
+          const wordIndex = remainingWordLetters.indexOf(guessLetter);
           if (wordIndex !== -1) {
-            const originalIndex = guessArray.findIndex( // if a letter from the remGuesses exists andits set to empty return its index
+            const originalIndex = guessArray.findIndex(
               (letter, idx) => letter === guessLetter && statusRow[idx] === "empty"
             );
             if (originalIndex !== -1) {
@@ -162,24 +167,20 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
           }
         }
 
-        // set rest as absent since we checked for the present and the corrects.
         for (let i = 0; i < length; i++) {
           if (statusRow[i] === "empty") {
             statusRow[i] = "absent";
           }
         }
 
-        newStatuses[currentAttempt] = statusRow;
+        newStatuses[currentAttempt] = statusRow as TileStatus[];
         setTileStatuses(newStatuses);
 
-        // move to next attempt,since the currentAttempt is 0based.
         if (currentAttempt < ATTEMPTS - 1) {
           setCurrentAttempt(currentAttempt + 1);
         } else {
           setCurrentAttempt(ATTEMPTS);
         }
-      } else {
-        // setDisplay(true);
       }
     }
   };
@@ -192,7 +193,6 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
   };
 }, [currentAttempt, guesses, tileStatuses, length, word, handleKey]); 
 
-  // Create a 2D array structure: 6 rows, 'length' columns
   const rows = Array.from({ length: ATTEMPTS });
   const cols = Array.from({ length: length });
 
@@ -204,7 +204,7 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
             <Tile 
               key={`tile-${rowIndex+1}-${colIndex}`} 
               letter={guesses[rowIndex]?guesses[rowIndex][colIndex]:""}
-              status={tileStatuses[rowIndex]?.[colIndex] || 'empty'}
+              status={(tileStatuses[rowIndex]?.[colIndex] || 'empty') as TileStatus}
             />
           ))}
         </div>
@@ -214,7 +214,7 @@ export const Wgrid = ({ length, word }: { length: number; word: string }) => {
           {word.toUpperCase()}
         </h1>
       </div> }
-      <Keyboard handleKey={handleKey}/> {/* need to add callback functions into this to make changes to the tiles.*/}
+      <Keyboard handleKey={handleKey}/>
     </div>
   );
 };
