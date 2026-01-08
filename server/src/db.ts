@@ -1,6 +1,8 @@
 import mongoose,{Schema} from "mongoose";
-
-const conn = mongoose.connect('mongodb://localhost:27017/Wordlex')
+import dotenv from 'dotenv'
+dotenv.config
+const str = process.env.mongo_server || ""
+const conn = mongoose.connect(str)
 
 const userSchema = new Schema({
     name:{type:String, unique:true},
