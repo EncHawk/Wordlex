@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { Container } from './components/container'
 import { Navbar } from './components/navbar'
 import { Hero } from './components/hero'
-import { LetterGrid } from './components/letterGrid'
 
 
 function App() {
@@ -40,7 +39,6 @@ function App() {
           backgroundSize:'40px 40px'
         }}
       className='absolute inset-0'>
-        <LetterGrid dark= {dark}/>
       </div>
         <Navbar/>
       <Container>

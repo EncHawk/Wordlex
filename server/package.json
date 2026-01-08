@@ -16,6 +16,9 @@
   },
   "name": "server",
   "private": true,
+  "scripts": {
+    "server":"cd src && node run server"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },

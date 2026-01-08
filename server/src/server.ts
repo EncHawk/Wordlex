@@ -1,11 +1,11 @@
 import express from 'express'
-import dotenv from 'dotenv'
+// import dotenv from 'dotenv'
 import * as zod from 'zod'
-import {User} from './db'
+// import {User} from './db'
 import wordRouter from './userRouter'
 import {globalCatch} from './utils'
 import cors from 'cors'
-dotenv.config()
+// dotenv.config()
 
 // constants definition for future well-being
 const app = express();

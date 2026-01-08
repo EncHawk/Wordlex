@@ -6,10 +6,12 @@ import jwt from 'jsonwebtoken'
 import {User,Words} from './db'
 import type { ZodUndefinedDef } from 'zod/v3'
 import { limiter } from './rateLimit'
-// import { data } from './data'
+import dotenv from 'dotenv'
+dotenv.config()
 
+// import { data } from './data'
+const secret = process.env.jwt_secret || ""
 const wordRouter = express.Router()
-const secret:any= "dilip"
 wordRouter.use(globalCatch)
 // wordRouter.use(limiter) for now, until we scale we dont touch this.
 
